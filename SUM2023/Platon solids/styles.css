@@ -1,0 +1,16 @@
+body {
+    background-color: black;
+    color: aquamarine;
+    margin: 0;
+}
+
+  div {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    user-select: none; /* Standard syntax */
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+}

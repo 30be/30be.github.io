@@ -1,0 +1,298 @@
+<!doctype html>
+<head>
+    <script src="./output/main.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <canvas id="glcanvas" width="800" height="700"></canvas>
+        <div id="shapes"></div>
+
+        <div id="notes">
+            <button id="reload" class="button-delete">Reload</button>
+            <p>WASD. RMButton=rotate around camera location; LMButton=rotate around point where you look at. Wheel=scaling. Ctrl-R - resetr camera position</p>
+            <p>All the figures shown are added via literal change of shader, which result is outputted to the console as well as the previous block.</p>
+            <p>Recursive structures of unions and intersections is supported. Recursive transformations is easy to do but currently are not implemented.</p>
+            <p>History of additions and element removals is supported</p>
+            <p>Auto saving to inter-session buffer is implemented</p>
+            <h3>TODOs:</h3>
+            <p>Figures movement is a bug, which will be fixed later.</p>
+            <p>As amount of figures rises, shader compilation time follows. So checkbox for deferred compilation will be added</p>
+            <p>Pause should be added as well</p>
+            <p>Ka/Ke/Ks/Ph materials</p>
+            <p>Constant shader part precompilation</p>
+            <p>Checkers / transparency / further raymarching improvement</p>
+            <p>Active/inactive checkbox</p>
+            <p>UI improvement</p>
+            <p>Modular way to add sinuses for color or position</p>
+            <p>Dragging of figures between unions/intersections</p>
+            <p>Fix camera</p>
+            <p>First of all - code reformating</p>
+        </div>
+        <div id="historyContainer">
+            <h1>History: Ctrl+Z/Ctrl+Shift+Z/</h1>
+            <hr />
+            <div id="history"></div>
+        </div>
+        <div id="worldContainer">
+            <h1>Result:</h1>
+            <hr />
+            <div id="world"></div>
+        </div>
+        <div id="checkout">
+            <h1>Check this out!()</h1>
+            <hr />
+            <div>sin(float(time) / 300.0) * 3.0</div>
+            <div>rand(float(time))</div>
+            <textarea placeholder="Edit Something!"></textarea>
+        </div>
+    </div>
+</body>
+<style>
+    textarea {
+        height: 100px;
+    }
+    #worldContainer,
+    #shapes,
+    #checkout,
+    #historyContainer,
+    #notes {
+        padding: 10px;
+        margin: 7px;
+        background-color: rgba(111, 41, 97, 0.3);
+        border: 2px solid rgba(111, 41, 97, 0.5);
+        display: inline-block;
+        vertical-align: top;
+        overflow: scroll;
+    }
+    #glcanvas {
+        padding: 10px;
+        background-color: rgba(111, 41, 97, 0.3);
+        border: 2px solid rgba(111, 41, 97, 0.5);
+        display: inline-block;
+    }
+    .shape,
+    #checkout > div {
+        padding: 5px;
+        background-color: rgba(111, 41, 97, 0.3);
+        border: 2px solid rgba(111, 41, 97, 0.5);
+        margin: 5px;
+    }
+    #checkout > div:hover {
+        cursor: copy;
+    }
+
+    /* Add button */
+    .button-add {
+        appearance: none;
+        background-color: #2ea44f;
+        border: 1px solid rgba(27, 31, 35, 0.15);
+        border-radius: 6px;
+        box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        padding: 6px 16px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .button-add:focus:not(:focus-visible):not(.focus-visible) {
+        box-shadow: none;
+        outline: none;
+    }
+
+    .button-add:hover {
+        background-color: #2c974b;
+    }
+
+    .button-add:focus {
+        box-shadow: rgba(46, 164, 79, 0.4) 0 0 0 3px;
+        outline: none;
+    }
+
+    .button-add:disabled {
+        background-color: #94d3a2;
+        border-color: rgba(27, 31, 35, 0.1);
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+    }
+
+    .button-add:active {
+        background-color: #298e46;
+        box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+    }
+    /* Delete button */
+    .button-delete {
+        appearance: none;
+        background-color: #a42e2e;
+        border: 1px solid rgba(39, 40, 41, 0.15);
+        border-radius: 6px;
+        box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        padding: 6px 16px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .button-delete:focus:not(:focus-visible):not(.focus-visible) {
+        box-shadow: none;
+        outline: none;
+    }
+
+    .button-delete:hover {
+        background-color: #972c2c;
+    }
+
+    .button-delete:focus {
+        box-shadow: rgba(164, 46, 46, 0.4) 0 0 0 3px;
+        outline: none;
+    }
+
+    .button-delete:disabled {
+        background-color: #d39494;
+        border-color: rgba(27, 31, 35, 0.1);
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+    }
+
+    .button-delete:active {
+        background-color: #8e2929;
+        box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+    }
+
+    /* Hide button */
+    .button-hide {
+        appearance: none;
+        border: 1px solid rgba(39, 40, 41, 0.15);
+        border-radius: 6px;
+        box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: inline-block;
+        font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        padding: 6px 16px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .button-hide:focus:not(:focus-visible):not(.focus-visible) {
+        box-shadow: none;
+        outline: none;
+    }
+
+    .button-hide:focus {
+        outline: none;
+    }
+
+    .button-hide:disabled {
+        border-color: rgba(27, 31, 35, 0.1);
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+    }
+
+    .button-hide:active {
+        box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+    }
+
+    /* General */
+    button {
+        margin: 5px;
+    }
+    select {
+        border: 1px solid rgba(27, 31, 35, 0.15);
+        border-radius: 6px;
+        box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+        box-sizing: border-box;
+        color: #fff;
+        background-color: #2b2b2b;
+        cursor: pointer;
+        display: inline-block;
+        font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        padding: 6px 16px;
+        margin: 5px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    option {
+        font-size: 130%;
+    }
+    * {
+        font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+    }
+    input {
+        width: 100px;
+        border: 1px solid rgba(27, 31, 35, 0.15);
+        border-radius: 6px;
+        box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+        box-sizing: border-box;
+        color: #000000;
+        cursor: pointer;
+        display: inline-block;
+        font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        padding: 6px 16px;
+        margin: 5px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    input[type='number']::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    label {
+        margin: 5px;
+    }
+</style>

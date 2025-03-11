@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Platon figures</title>
+  </head>
+  <body>
+    <script type="module" src="./bundle.js"></script>
+    <script type="module"></script>
+
+    <div id="places"></div>
+    <div style="position: fixed">
+      <input type="file" id="file" />
+
+      <form>
+        <div id="coords"></div>
+        <input type="button" value="pause" onclick="handlePause();" />
+        <!-- <br /><input type="range" min="0" max="10" id="rotY" value="0" /><label
+          for="rotY"
+          >RotY</label
+        >
+        <br />
+        <input type="range" min="0" max="10" id="rotX" value="0" /><label
+          for="rotX"
+          >RotX</label
+        >
+        <br />
+        <input type="range" min="0" max="10" id="rotZ" value="0" /><label
+          for="rotZ"
+          >RotZ</label
+        >
+        <br />
+
+        <input
+          type="range"
+          min="-1"
+          max="1"
+          step="any"
+          id="transX"
+          value="0"
+        /><label for="transX">TransX</label> <br />
+        <input
+          type="range"
+          min="-1"
+          max="1"
+          step="any"
+          id="transY"
+          value="0"
+        /><label for="transY">TransY</label> <br />
+        <input
+          type="range"
+          min="-1"
+          max="1"
+          step="any"
+          id="transZ"
+          value="0"
+        /><label for="transZ">TransZ</label> <br /> -->
+        <input
+          type="range"
+          min="0"
+          max="10"
+          step="any"
+          id="rcoeff"
+          value="1"
+        /><label for="rcoeff">RED</label>
+
+        <br /><input
+          type="range"
+          min="0"
+          max="10"
+          step="any"
+          id="gcoeff"
+          value="0.125"
+        /><label for="gcoeff">GREEN</label> <br /><input
+          type="range"
+          min="0"
+          max="10"
+          step="any"
+          id="bcoeff"
+          value="8"
+        /><label for="bcoeff">BLUE</label> <br /><input
+          type="range"
+          min="0"
+          max="10"
+          step="any"
+          id="a"
+          value="0.02"
+        /><label for="a">a</label> <br /><input
+          type="range"
+          min="0"
+          max="100"
+          step="any"
+          id="b"
+          value="3"
+        /><label for="b">b</label>
+      </form>
+      <form id="unitsChecker"></form>
+      <img
+        id="CGSG-Logo"
+        src="./bin/Images/CGSG-Logo.svg"
+        width="200"
+        height="200"
+      />
+    </div>
+    <style>
+      body {
+        margin: 0;
+        padding-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      #form {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        position: fixed;
+        bottom: 0;
+        /*left: 0;*/
+        right: 0;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+      #id1 {
+        border: none;
+        padding: 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+      #input:focus {
+        outline: none;
+      }
+      #form > button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        backdrop-filter: blur(5px);
+      }
+      #user {
+        color: green;
+      }
+      #notUser {
+        color: red;
+      }
+      #messages > li {
+        padding: 0.5rem 1rem;
+      }
+      .message {
+        background: #efefefc0;
+        border-radius: 10px;
+        margin: 6px;
+      }
+    </style>
+    <div
+      style="
+        overflow: auto;
+        right: 32vw;
+        width: 36vw;
+        top: 24px;
+        height: 48px;
+        background: #afafffa0;
+        backdrop-filter: blur(5px);
+        position: fixed;
+        border-radius: 24px;
+        background-image: url(./bin/Images/Compass.png);
+        background-repeat: repeat-x;
+      "
+      id="compassBox"
+    >
+      <img
+        style="margin-left: calc(50% - 24px); opacity: 0.8"
+        src="./bin/Images/Cursor.png"
+      />
+    </div>
+    <div
+      style="
+        overflow: auto;
+        width: 30vw;
+        position: fixed;
+        left: 70vw;
+        right: 0;
+        bottom: 3rem;
+        top: 0;
+      "
+      id="msgbox"
+    >
+      <ul id="messages"></ul>
+      <div id="form">
+        <input id="id1" /><button id="sendButton">Send</button
+        ><button id="clearButton">Clear</button>
+      </div>
+    </div>
+    <div
+      style="
+        overflow: auto;
+        left: 15vw;
+        top: 24px;
+        position: fixed;
+        background-color: whitesmoke;
+        width: 48px;
+        height: 48px;
+        border-radius: 24px;
+      "
+      id="infoButton"
+    >
+      <img style="opacity: 0.8" width="48px" src="./bin/Images/Info.png" />
+    </div>
+    <div
+      style="
+        overflow: auto;
+        left: 17vw;
+        top: 17vh;
+        width: 50vw;
+        height: 50vh;
+        padding: 24px;
+        position: fixed;
+        background-color: whitesmoke;
+
+        border-radius: 24px;
+        visibility: hidden;
+      "
+      id="info"
+    >
+      <h1>CGSG LS4 3d map travelling system</h1>
+      <h3>Управление</h3>
+      <h5>Велосипед</h5>
+      <p>WASD - Инерционные ускорения, повороты;</p>
+      <p>ЛКМ - вращение</p>
+      <p>Колесо мыши - отдаление</p>
+      <h5>Пешее перемещение</h5>
+      <p>WASD - Перемещение вперед/назад/право/лево</p>
+      <p>ЛКМ - вращение</p>
+      <p>Колесо мыши - отдаление</p>
+      <h5>Режим свободной камеры</h5>
+      <p>WASD - перемещение в пространстве</p>
+      <p>ЛКМ - вращение вокруг центра координат</p>
+      <p>ПКМ - вращение камеры</p>
+      <p>Колесо мыши - отдаление</p>
+    </div>
+    <div
+      style="
+        overflow: auto;
+        /*width: 100vw;
+        top: 40vh;*/
+        position: fixed;
+        /*visibility: hidden;*/
+      "
+      id="loading"
+    >
+      <img
+        style="
+          margin-left: calc(50vw - 100px);
+          margin-top: calc(50vh - 100px);
+          opacity: 0.8;
+        "
+        src="./bin/Images/Loading.gif"
+      />
+    </div>
+    <canvas id="glCanvas" width="3000" height="3000"> </canvas>
+  </body>
+</html>

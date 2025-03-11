@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+        <title>Platon figures</title>
+    </head>
+    <body>
+        <script src="main.js"></script>
+        <script type="module">
+            //src="main.js"
+            import * as GLtest from "./main.js";
+            import * as controls from "./controls.js";
+            import { loadObj } from "./prims.js";
+            window.addEventListener("load", () => {
+                GLtest.initGL();
+                window.onmousemove = controls.handleMouseMove;
+                window.onmouse = controls.handleMouseMove;
+                window.onmousedown = controls.handleMouseDown;
+                window.onmouseup = controls.handleMouseUp;
+                window.addEventListener("contextmenu", (e) =>
+                    e.preventDefault()
+                );
+                window.addEventListener("wheel", (event) => {
+                    controls.handleMouseZoom(event);
+                });
+                window.onscroll = () => window.scroll(0, 0);
+
+                window.addEventListener("keyup", (event) => {
+                    controls.handleKeyUp(event);
+                });
+                window.addEventListener("keydown", (event) => {
+                    controls.handleKeyDown(event);
+                });
+                document
+                    .querySelector("#file")
+                    .addEventListener("change", loadObj);
+            });
+        </script>
+        <script src="./prims.js"></script>
+        <div>
+            <div style="position: fixed">
+                <input type="file" id="file" />
+                <form>
+                    <div id="coords"></div>
+                    <input
+                        type="button"
+                        value="pause"
+                        onclick="handlePause();"
+                    />
+                    <br /><input
+                        type="range"
+                        min="0"
+                        max="10"
+                        id="rotY"
+                        value="0"
+                    /><label for="rotY">RotY</label> <br />
+                    <input
+                        type="range"
+                        min="0"
+                        max="10"
+                        id="rotX"
+                        value="0"
+                    /><label for="rotX">RotX</label> <br />
+                    <input
+                        type="range"
+                        min="0"
+                        max="10"
+                        id="rotZ"
+                        value="0"
+                    /><label for="rotZ">RotZ</label> <br />
+
+                    <input
+                        type="range"
+                        min="-1"
+                        max="1"
+                        step="any"
+                        id="transX"
+                        value="0"
+                    /><label for="transX">TransX</label> <br />
+                    <input
+                        type="range"
+                        min="-1"
+                        max="1"
+                        step="any"
+                        id="transY"
+                        value="0"
+                    /><label for="transY">TransY</label> <br />
+                    <input
+                        type="range"
+                        min="-1"
+                        max="1"
+                        step="any"
+                        id="transZ"
+                        value="0"
+                    /><label for="transZ">TransZ</label> <br />
+                    <input
+                        type="range"
+                        min="0"
+                        max="10"
+                        step="any"
+                        id="rcoeff"
+                        value="1"
+                    /><label for="rcoeff"></label>
+
+                    <br /><input
+                        type="range"
+                        min="0"
+                        max="10"
+                        step="any"
+                        id="gcoeff"
+                        value="0.125"
+                    /><label for="gcoeff">GREEN</label> <br /><input
+                        type="range"
+                        min="0"
+                        max="10"
+                        step="any"
+                        id="bcoeff"
+                        value="8"
+                    /><label for="bcoeff">BLUE</label> <br /><input
+                        type="range"
+                        min="0"
+                        max="10"
+                        step="any"
+                        id="a"
+                        value="0.02"
+                    /><label for="a">a</label> <br /><input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="any"
+                        id="b"
+                        value="3"
+                    /><label for="b">b</label>
+                </form>
+            </div>
+
+            <canvas id="glCanvas" width="3000" height="3000"> </canvas>
+        </div>
+    </body>
+</html>
