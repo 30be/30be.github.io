@@ -1,7 +1,4 @@
 .vscode/
 node_modules/
-commit.bat
-output/main.js.map
-output/main.js
 log/
 emsdk/
