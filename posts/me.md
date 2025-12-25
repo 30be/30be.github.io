@@ -58,6 +58,12 @@ Written in collaboration with [tim2303](https://github.com/tim2303/), using Reac
 [![haskell-neural-net](haskell-nn.png){width=30%}](haskell-nn.png)
 MNIST classifier from scratch. Backpropagation, [online learning](https://en.wikipedia.org/wiki/Online_machine_learning),  console interface.
 
+#### [Bitcoin in Haskell](https://github.com/30be/bitchs)
+
+[![Bitcoin transaction](bitcoin-transaction.png){width=30%}](bitcoin-transaction.png)
+
+A minimalist bitcoin implementation written from scratch, inspired by [Karpathy's approach](https://karpathy.github.io/2021/06/21/blockchain/). It covers elliptic curves, SHA-256 primitives, standard-compliant data serialization. It is possible to send real (well, virtual) money with it.
+
 #### OpenGL renderer
 
 [![OpenGL renderer](T06ANIM.png){width=30%}](T06ANIM.png)

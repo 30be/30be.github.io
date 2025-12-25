@@ -19,7 +19,7 @@ run_watchers() {
   CABAL_PID=$!
 
   local SUPERSTATIC_LOG=$(log_path "superstatic")
-  npx superstatic _site --config '{"cleanUrls": true}' >$SUPERSTATIC_LOG 2>&1 &
+  npx superstatic docs --config '{"cleanUrls": true}' >$SUPERSTATIC_LOG 2>&1 &
   SUPERSTATIC_PID=$!
 
   echo "$CABAL_PID $SUPERSTATIC_PID"

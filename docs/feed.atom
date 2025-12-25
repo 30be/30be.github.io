@@ -144,6 +144,9 @@ Make sure to have JavaScript enabled
 <h4 id="haskell-neural-network"><a href="https://github.com/30be/haskell-neural-net">Haskell neural network</a></h4>
 <p><a href="haskell-nn.png"><img src="haskell-nn.png" style="width:30.0%" alt="haskell-neural-net" /></a>
 Классификатор MNIST с нуля: backpropagation, <a href="https://en.wikipedia.org/wiki/Online_machine_learning">online learning</a>, консольный интерфейс.</p>
+<h4 id="bitcoin-in-haskell"><a href="https://github.com/30be/bitchs">Bitcoin in Haskell</a></h4>
+<p><a href="bitcoin-transaction.png"><img src="bitcoin-transaction.png" style="width:30.0%" alt="Bitcoin transaction" /></a></p>
+<p>Простой bitcoin-кошелек, написанный с нуля. Вдохновлен <a href="https://karpathy.github.io/2021/06/21/blockchain/">Andrej Karpathy</a>. Эллиптические кривые, SHA-256, сериализация по стандарту, базовая работоспособность.</p>
 <h4 id="opengl-renderer">OpenGL renderer</h4>
 <p><a href="T06ANIM.png"><img src="T06ANIM.png" style="width:30.0%" alt="OpenGL renderer" /></a>
 Написанный с нуля на C++ 3D-движок в реальном времени с отложенным освещением, прозрачностью, мультитекстурами, анимацией DAE/Collada.</p>

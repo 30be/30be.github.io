@@ -58,6 +58,12 @@ last-update: 2025-10-10
 [![haskell-neural-net](haskell-nn.png){width=30%}](haskell-nn.png)
 Классификатор MNIST с нуля: backpropagation, [online learning](https://en.wikipedia.org/wiki/Online_machine_learning), консольный интерфейс.
 
+#### [Bitcoin in Haskell](https://github.com/30be/bitchs)
+
+[![Bitcoin transaction](bitcoin-transaction.png){width=30%}](bitcoin-transaction.png)
+
+Простой bitcoin-кошелек, написанный с нуля. Вдохновлен [Andrej Karpathy](https://karpathy.github.io/2021/06/21/blockchain/). Эллиптические кривые, SHA-256, сериализация по стандарту, базовая работоспособность.
+
 #### OpenGL renderer
 
 [![OpenGL renderer](T06ANIM.png){width=30%}](T06ANIM.png)
