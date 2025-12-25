@@ -1,6 +1,5 @@
 dist-newstyle
 _cache
-_site
 .env
 .venv
 ROADMAP.md
