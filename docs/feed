@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>shoggothStaring</title>
+        <link>https://shoggothstaring.com</link>
+        <description><![CDATA[Thoughts about now and future, written mostly for myself.]]></description>
+        <atom:link href="https://shoggothstaring.com/feed" rel="self"
+                   type="application/rss+xml" />
+        <lastBuildDate>Sat, 11 Oct 2025 00:00:00 UT</lastBuildDate>
+        <item>
+    <title>Spaced repetition</title>
+    <link>https://shoggothstaring.com/srs.html</link>
+    <description><![CDATA[<h1>Spaced repetition</h1><small>2025-10-11</small><div id="anki-heatmap">
+Make sure to have JavaScript enabled
+</div>
+<script src="anki-heatmap.js"></script>
+<p>Above is a heatmap of my Anki usage. It is updated in real time. I know, it is very far from perfect, and that there are more days skipped than not, but I will try to improve that in the future.</p>
+<p>This way, I publicly commit: I, LS4, will never skip a day of Anki practice from 12th October 2025 until the environment requires me to do so.</p>
+<p>By skipping, I mean not completing all the new cards (currently, 100 per day) and the cards for review.</p>
+<p>By environment requirement, I mean a physical inability to practice on the day, or a special permission written <a href="#days-when-i-did-not-practice">here</a> by my past self, if possible.</p>
+<h2 id="why-did-i-do-that">Why did I do that?</h2>
+<p>I really value how <a href="https://ncase.me/remember/">Nicky Case</a> explained it. It actually was one of the many inspirations for this site.</p>
+<p>But if you really somehow don’t want to read this masterpiece, here is a short summary:</p>
+<p>Basically, we forget things. This fact is hard to argue with. I think I have already forgotten half of my school program, even though I haven’t even finished it yet.</p>
+<p>A smart scientist, namely Hermann Ebbinghaus, found out that the <a href="https://en.wikipedia.org/wiki/Learning_curve">rate of retention</a> generally follows exponential decay:</p>
+<canvas id="ebbinghaus">
+</canvas>
+<label for="ebbinghaus-slider">decay:</label>
+<input type="range" id="ebbinghaus-slider" min="0.00" max="0.02" step="0.0001" value="0.01">
+<script src="ebbinghaus.js"></script>
+<p>This is sad. But the more we strain our brain with some information and the more we experience it, the slower the decay becomes.</p>
+<p>This way we can learn better if we repeat things multiple times. Repetition is the <a href="https://www.royalroad.com/fiction/21220/mother-of-learning">mother of learning</a>.</p>
+<p>But Ebbinghaus shows us that the timing at which we repeat things is actually very important too. If we repeat things too early, there will be no strain for the brain. If too late - it will be just like learning the thing anew, which is too hard for us.</p>
+<canvas id="ebbinghaus2">
+</canvas>
+<label for="ebbinghaus2-slider">review:</label>
+<input type="range" id="ebbinghaus2-slider" min="0.00" max="10" step="0.001" value="3">
+<script src="ebbinghaus2.js"></script>
+<p>This is when <a href="https://apps.ankiweb.net/">Anki</a> (or other repetition systems) comes into play. It calculates the perfect times when the strain is just right for you to learn the thing.</p>
+<p>The learning itself happens with the help of flashcards. A flashcard contains two sides: a question, and an answer. You try to remember the answer to the question. Then, you flip the card. If you got it right, then you move on to the next card. If you got it wrong, then you move on to the next card as well. But Anki will remember to give you this card again soon.</p>
+<p>Currently, Anki uses the new <a href="https://github.com/open-spaced-repetition/fsrs4anki/wiki/ABC-of-FSRS">FSRS</a> algorithm, which is an extremely complicated optimization model with 21 different parameters.</p>
+<p>This may sound like overkill, but it does not really get in the way. This actually is a second thing that I like about Anki: the <a href="https://thezvi.substack.com/p/levels-of-friction">level of friction</a> is minimal.</p>
+<p>At least for me. I have a single deck with thousands of cards, which I just open, and mentally go through a simple algorithm:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> study():</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span>(<span class="bu">len</span>(cards) <span class="op">!=</span> <span class="dv">0</span>):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        card <span class="op">=</span> cards.pop()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (i_know(card)):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>          press(GOOD)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>          press(AGAIN) <span class="co"># card gets returned to the stack at a later time</span></span></code></pre></div>
+<p>That’s all. This is the entire learning process. No tests, no grading, no textbook re-reading. And it is scientifically proven to work better than most of the learning methods used in schools.</p>
+<p>This way my daily card learning time is about 20-30 minutes per day. It is a bit more than the average user spends, but that is explained by my student life.</p>
+<h2 id="what-do-i-learn">What do I learn?</h2>
+<p>Pretty much everything. My cards often look like this:</p>
+<blockquote>
+<p><strong>Question</strong>: Zipf’s law</p>
+<p><strong>Answer</strong>: When a list of measured values is sorted in decreasing order, the value of the n-th entry is often approximately inversely proportional to n.</p>
+<p><strong>Source</strong>: <a href="https://en.wikipedia.org/wiki/Zipf%27s_law" class="uri">https://en.wikipedia.org/wiki/Zipf%27s_law</a></p>
+</blockquote>
+<p>I try to add cards for every Wikipedia or blog article I read and find important, my Foxford studies, German and Japanese words, programming concepts, or anything else I think I will need in my future life.</p>
+<p>The general threshold is 2 minutes of life saved.</p>
+<figure>
+<img src="https://imgs.xkcd.com/comics/is_it_worth_the_time.png" alt="Relevant XKCD" />
+<figcaption aria-hidden="true">Relevant XKCD</figcaption>
+</figure>
+<h2 id="rules-for-cards">Rules for cards</h2>
+<p>These are the rules I try to follow when creating and studying my cards:</p>
+<ol type="1">
+<li>Every card should be small (atomic).</li>
+<li>Every card should be connected (no orphan cards).</li>
+<li>Every card should be meaningful (learning something I care about).</li>
+<li>Learn and understand the topic before you memorize it.</li>
+<li>Build upon the basics.</li>
+<li>Reviews just before bedtime are <a href="https://gwern.net/spaced-repetition#when-to-review">a bit more efficient</a>. But the effect is not big enough to change the habit, so I try to go through my Anki deck just before work and studying.</li>
+</ol>
+<h2 id="what-if-you-forgot-the-answer">What if you forgot the answer?</h2>
+<p>You will remember it next time more easily, I promise. But how to memorize the card better if you made a mistake?</p>
+<p>This is where many common memorization methods come into play, like the method of loci, mind maps, mnemonics, etc.</p>
+<p>But improvement in spaced repetition software itself is also possible. Quoting Michael Nielsen:</p>
+<blockquote>
+<p><strong>How to best help users when they forget the answer to a question?</strong> Suppose a user can’t remember the answer to the question: “Who was the second President of the United States?” Perhaps they think it’s Thomas Jefferson, and are surprised to learn it’s John Adams. In a typical spaced-repetition memory system this would be dealt with by decreasing the time interval until the question is reviewed again. But it may be more effective to follow up with questions designed to help the user understand some of the surrounding context. E.g.: “Who was George Washington’s Vice President?” (A: “John Adams”). Indeed, there could be a whole series of follow-up questions, all designed to help better encode the answer to the initial question in memory.</p>
+</blockquote>
+<p>But it sounds really hard to implement from a programming perspective. If the user is the one adding cards, then who will suggest cards that provide surrounding context? How to implement the newly added cards into the FSRS algorithm?</p>
+<p>Luckily, we live in an AI era, so we may hope that someday there will be software that will be able to do that. Actually, it doesn’t even sound that hard to write, given the abundance and simplicity of LLM APIs. This is a startup idea, by the way. Go make it. I will be your first user.</p>
+<h2 id="days-when-i-did-not-practice">Days when I did not practice</h2>
+<ul>
+<li>2025-10-29: I fell asleep before I could do anything. It was caused by 2 consecutive nights with little sleep on a camping tour.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<p><a href="https://ncase.me/remember/" class="uri">https://ncase.me/remember/</a></p>
+<p><a href="https://gwern.net/spaced-repetition" class="uri">https://gwern.net/spaced-repetition</a></p>
+<p><a href="https://www.lesswrong.com/posts/F6ZTtBXn2cFLmWPdM/seven-years-of-spaced-repetition-software-in-the-classroom-1" class="uri">https://www.lesswrong.com/posts/F6ZTtBXn2cFLmWPdM/seven-years-of-spaced-repetition-software-in-the-classroom-1</a></p>
+<p><a href="https://quantum.country/" class="uri">https://quantum.country/</a></p>
+<p><a href="https://cognitivemedium.com/srs-mathematics" class="uri">https://cognitivemedium.com/srs-mathematics</a></p>
+<p><a href="https://www.supermemo.com/en/blog/twenty-rules-of-formulating-knowledge" class="uri">https://www.supermemo.com/en/blog/twenty-rules-of-formulating-knowledge</a></p>
+<p><a href="https://augmentingcognition.com/ltm.html" class="uri">https://augmentingcognition.com/ltm.html</a></p>]]></description>
+    <pubDate>Sat, 11 Oct 2025 00:00:00 UT</pubDate>
+    <guid>https://shoggothstaring.com/srs.html</guid>
+    <dc:creator>LS4</dc:creator>
+</item>
+<item>
+    <title>Про меня</title>
+    <link>https://shoggothstaring.com/ru.html</link>
+    <description><![CDATA[<h1>Про меня</h1><small>2025-10-02</small><p><small><a href="me">English version</a></small></p>
+<p>Привет. Меня зовут Лука.</p>
+<p>Я увлекаюсь программированием, чтением <a href="http://23.94.5.170:8080">блогов</a>, медитацией и горными лыжами.</p>
+<p>Имею опыт программирования на следующих языках:</p>
+<ul>
+<li>C/C++ (Vulkan, OpenGL, WinAPI, SDL2)</li>
+<li>Haskell (Hakyll, base)</li>
+<li>Python (pytorch, numpy, pandas, matplotlib, seaborn)</li>
+<li>JavaScript (React, Node.js, Express.js, three.js, Rollup(Webpack))</li>
+</ul>
+<p>Использую Linux(Arch), могу его администрировать на базовом уровне. В коде стараюсь держаться принципов <a href="https://grugbrain.dev/">grug</a>.</p>
+<p>Среди моих достижений можно отметить:</p>
+<ul>
+<li>1 место на Колмогоровских Чтениях (2023) - я был членом команды по написанию движка 3D-графики на Vulkan</li>
+<li>Призер регионального этапа ВСОШ по программированию (2024).</li>
+</ul>
+<p>В данный момент я имею уровень B2 по немецкому, C1 по английскому, пара сотен <a href="srs">Anki</a>-карточек по японскому.</p>
+<p>Мое мировоззрение во многом совпадает с <a href="https://lesswrong.com/">LessWrong</a> и Bay Area в целом. Несмотря на то, что я там никогда не был физически, духовно я там живу.</p>
+<h3 id="проекты">Проекты</h3>
+<p>В случайном порядке:</p>
+<h4 id="shoggothstaring.com"><a href="about">shoggothstaring.com</a></h4>
+<p>Этот сайт написан на Haskell <a href="https://github.com/30be/shoggothStaring/blob/main/main.hs">здесь</a>.</p>
+<h4 id="bike-on-a-map-online"><a href="https://30be.github.io/SUM2023/PROJECT/dist/">Bike on a map (Online)</a></h4>
+<p><a href="bike.png"><img src="bike.png" style="width:30.0%" alt="bike" /></a>
+Грузится долго: рассчитан на открытие с ПК.
+Внутри - самодельный 3D-движок, в котором можно покататься на велосипеде с развевающимся флагом. Помимо прочего, можно включить пару десятков тысяч коров с крылышками, фрактал Мандельброта на небе.</p>
+<h4 id="web-raymarching-system-online"><a href="https://30be.github.io/SUM2024/WebRaymarching/">Web raymarching system (Online)</a></h4>
+<p><a href="raymarching.png"><img src="raymarching.png" style="width:30.0%" alt="raymarching" /></a>
+Система рисования 3D-графики с использованием алгоритма raymarching на GPU с помощью динамически создаваемых шейдеров.</p>
+<h4 id="multieditor-online"><a href="https://30be.github.io/MultiEditor/output/index.html">Multieditor (Online)</a></h4>
+<p><a href="multieditor.png"><img src="multieditor.png" style="width:30.0%" alt="multieditor" /></a>
+Незавершенный проект для просмотра объектов, текстур и материалов 3D-модели пользователя.
+Написан в паре с <a href="https://github.com/tim2303/">tim2303</a>, с использованием React и Three.js</p>
+<h4 id="haskell-neural-network"><a href="https://github.com/30be/haskell-neural-net">Haskell neural network</a></h4>
+<p><a href="haskell-nn.png"><img src="haskell-nn.png" style="width:30.0%" alt="haskell-neural-net" /></a>
+Классификатор MNIST с нуля: backpropagation, <a href="https://en.wikipedia.org/wiki/Online_machine_learning">online learning</a>, консольный интерфейс.</p>
+<h4 id="opengl-renderer">OpenGL renderer</h4>
+<p><a href="T06ANIM.png"><img src="T06ANIM.png" style="width:30.0%" alt="OpenGL renderer" /></a>
+Написанный с нуля на C++ 3D-движок в реальном времени с отложенным освещением, прозрачностью, мультитекстурами, анимацией DAE/Collada.</p>
+<h4 id="cpu-raytracer">CPU Raytracer</h4>
+<p><a href="T05RT.png"><img src="T05RT.png" style="width:30.0%" alt="CPU Raytracer" /></a>
+Параллельный рендерер с поддержкой прозрачности, материалов, сложных объектов, загрузки моделей с текстурами</p>
+<h4 id="textbook-rss"><a href="https://github.com/30be/TextbookRSS">textbook-rss</a></h4>
+<p>Небольшой проект на Python, позволяющий генерировать RSS-feed для любых книг.</p>
+<h3 id="связь">Связь</h3>
+<p>E-mail: <a href="mailto:ls4@shoggothstaring.com" class="email">ls4@shoggothstaring.com</a></p>
+<p>Telegram: <a href="https://t.me/cgsg162"><span class="citation" data-cites="cgsg162">@cgsg162</span></a></p>
+<p>PGP:</p>
+<pre class="pgp"><code>-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEaOI7MBYJKwYBBAHaRw8BAQdA+2wnekY3uI0lmJX1EGE4kzPDZmLOiCtp9KWm
+Y1Pt+Di0KkxTNCAoMjAyNS0xMC0wNSkgPGxzNEBzaG9nZ290aHN0YXJpbmcuY29t
+PoiQBBMWCgA4FiEEANwYDsL5P9/1nJQ3BC8uYR9UBJ8FAmjiOzACGwMFCwkIBwIG
+FQoJCAsCBBYCAwECHgECF4AACgkQBC8uYR9UBJ8GsQEA7tKxdjLNkXUPvQwZy3QY
+Di9BbfPzMNhf3hJGysqSo0QBAPzLO8fz8YPNqRyVqb02yuedOuRgvqM6rZOtnuO5
+A5AAuDgEaOI7MBIKKwYBBAGXVQEFAQEHQIUPfYFCR1kj7sC2CTDukeJgtC/Dv9fs
+qvAPLKuyowEUAwEIB4h4BBgWCgAgFiEEANwYDsL5P9/1nJQ3BC8uYR9UBJ8FAmji
+OzACGwwACgkQBC8uYR9UBJ9EzAEAqUTMKrUaeTUVQNQmOKxDvVMRa1eAQJZUlIY9
+hhZ39HwBALvRI1091NdEWw0zJkXiq3straGKtL8DESid+fNfD2UP
+=fVi6
+-----END PGP PUBLIC KEY BLOCK-----</code></pre>]]></description>
+    <pubDate>Thu, 02 Oct 2025 00:00:00 UT</pubDate>
+    <guid>https://shoggothstaring.com/ru.html</guid>
+    <dc:creator>LS4</dc:creator>
+</item>
+
+    </channel>
+</rss>
