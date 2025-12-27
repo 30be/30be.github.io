@@ -2,7 +2,7 @@
 --  See LICENSE for details.
 
 import Data.Aeson
-import Data.Text (stripSuffix)
+import Data.Text (pack, stripSuffix, unpack)
 import Hakyll
 import Text.Blaze.Html.Renderer.String (renderHtml)
 import Text.Blaze.Html5 as H hiding (main)
@@ -48,14 +48,26 @@ indexCompiler posts text = fmap . renderText <$> traverse getPostData posts ?? t
       ul $ forM_ postsData $ \(PostData {..}) ->
         li $ a ! href (strip $ toText postRoute) $ toHtml $ postTitle <> " - " <> postDate
 
+telegramComments :: Html
+telegramComments = do
+  script
+    ! async ""
+    ! src "https://telegram.org/js/telegram-widget.js?22"
+    ! dataAttribute "telegram-discussion" "shoggothstaring" -- "ls4wrong"
+    ! dataAttribute "comments-limit" "20"
+    ! dataAttribute "color" "EB99A1"
+    ! dataAttribute "dark" "1"
+    $ mempty
+
 defaultTemplate :: Item String -> Compiler (Item String)
 defaultTemplate item = do
   title <- getMetadataField (itemIdentifier item) "title"
-  relativizeUrls $ renderHtml . defaultHTML (maybeToMonoid title) . preEscapedToHtml <$> item
+  url <- mappend "https://shoggothstaring.com/" . unpack . maybeToMonoid . stripSuffix ".html" . pack . maybeToMonoid <$> getRoute (itemIdentifier item)
+  relativizeUrls $ renderHtml . defaultHTML url (maybeToMonoid title) . preEscapedToHtml <$> item
   where
     headerLinks = [("/", "Home"), ("/about", "About"), ("/me", "Me"), ("/rss.xml", "RSS")]
-    defaultHTML :: String -> Html -> Html
-    defaultHTML title contents = docTypeHtml ! lang "en" $ do
+    defaultHTML :: FilePath -> String -> Html -> Html
+    defaultHTML url title contents = docTypeHtml ! lang "en" $ do
       H.head $ do
         H.title $ "shoggothStaring" <> (if null title then "" else " :: ") <> toHtml title
         meta ! charset "utf-8"
@@ -67,6 +79,7 @@ defaultTemplate item = do
         link ! rel "stylesheet" ! href "pandoc-pygments.css" ! media "screen and not (prefers-color-scheme: dark)"
         link ! rel "stylesheet" ! href "pandoc-zenburn.css" ! media "screen and (prefers-color-scheme: dark)"
         link ! rel "stylesheet" ! href "style.css"
+        link ! rel "canonical" ! href (toValue url) -- Required for telegram comments
         script ! async "async" ! src "search.js" $ mempty
         googleAnalyticsScript
       body $ do
@@ -86,10 +99,12 @@ defaultTemplate item = do
 postTemplate :: Item String -> Compiler (Item String)
 postTemplate item = do
   [title, date] <- fmap toHtml <$> forM ["title", "date"] (getMetadataField' (itemIdentifier item))
+
   let postHTML contents = do
         h1 title
         small date
-        contents
+        void contents
+        telegramComments
   pure $ renderHtml . postHTML . preEscapedToHtml <$> item
 
 config :: Configuration
