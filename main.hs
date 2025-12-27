@@ -61,15 +61,18 @@ telegramComments = do
 
 defaultTemplate :: Item String -> Compiler (Item String)
 defaultTemplate item = do
-  title <- getMetadataField (itemIdentifier item) "title"
-  url <- mappend "https://shoggothstaring.com/" . unpack . maybeToMonoid . stripSuffix ".html" . pack . maybeToMonoid <$> getRoute (itemIdentifier item)
-  relativizeUrls $ renderHtml . defaultHTML url (maybeToMonoid title) . preEscapedToHtml <$> item
+  url <- mappend "https://shoggothstaring.com/" . unpack . maybeToMonoid . stripSuffix ".html" . pack . maybeToMonoid <$> getRoute iid
+  title <- maybeToMonoid <$> getMetadataField iid "title"
+  desc <- maybeToMonoid <$> getMetadataField iid "description"
+  relativizeUrls $ renderHtml . defaultHTML url title desc . preEscapedToHtml <$> item
   where
+    iid = itemIdentifier item
     headerLinks = [("/", "Home"), ("/about", "About"), ("/me", "Me"), ("/rss.xml", "RSS")]
-    defaultHTML :: FilePath -> String -> Html -> Html
-    defaultHTML url title contents = docTypeHtml ! lang "en" $ do
+    defaultHTML :: String -> String -> String -> Html -> Html
+    defaultHTML url title desc contents = docTypeHtml ! lang "en" $ do
+      let fullTitle = "shoggothStaring" <> (if null title then "" else " :: ") <> title
       H.head $ do
-        H.title $ "shoggothStaring" <> (if null title then "" else " :: ") <> toHtml title
+        H.title $ toHtml fullTitle
         meta ! charset "utf-8"
         meta ! httpEquiv "x-ua-compatible" ! content "ie=edge"
         meta ! name "viewport" ! content "width=device-width, initial-scale=1"
@@ -80,6 +83,11 @@ defaultTemplate item = do
         link ! rel "stylesheet" ! href "pandoc-zenburn.css" ! media "screen and (prefers-color-scheme: dark)"
         link ! rel "stylesheet" ! href "style.css"
         link ! rel "canonical" ! href (toValue url) -- Required for telegram comments
+        meta ! property "og:site_name" ! content "shoggothStaring"
+        meta ! property "og:title" ! content (toValue fullTitle)
+        meta ! property "og:url" ! content (toValue url)
+        if not (null desc) then meta ! property "og:description" ! content (toValue desc) else mempty
+        meta ! property "og:type" ! content "article"
         script ! async "async" ! src "search.js" $ mempty
         googleAnalyticsScript
       body $ do
