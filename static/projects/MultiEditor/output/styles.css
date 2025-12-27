@@ -1,0 +1,126 @@
+html,
+body {
+  justify-content: center;
+  background-color: dimgray;
+  display: flex;
+}
+
+.tile-text {
+  color: rgb(36, 114, 91);
+  font-size: 50px;
+  user-select: none;
+  pointer-events: none;
+  hyphens: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.inner-text {
+  color: rgb(127, 233, 201);
+  font-size: 35px;
+  user-select: none;
+  pointer-events: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.drag-n-drop {
+  background-color: rgba(74, 199, 126, 0.897);
+  border-radius: 10%;
+  border-color: rgb(35, 133, 84);
+  border-style: dashed;
+  position: absolute;
+  /* */
+  flex-wrap: wrap;
+  display: flex;
+  align-content: center;
+  justify-content: space-around;
+  /* */
+  top: 1%;
+  left: 1%;
+  width: 24%;
+  min-width: 200px;
+  height: 12%;
+  min-height: 50px;
+  /* Background */
+  background-image:
+    linear-gradient(45deg, rgba(0, 0, 0, .06) 25%, transparent 0),
+    linear-gradient(-45deg, rgba(0, 0, 0, .06) 25%, transparent 0),
+    linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, .06) 0),
+    linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, .06) 0);
+  background-size: 24px 24px;
+  background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+}
+
+.drag-n-drop._active {
+  background-color: rgb(154, 212, 178);
+  border-style: groove;
+  border-color: rgb(39, 71, 55);
+}
+
+.selector {
+  background-color: rgb(36, 134, 118);
+  border-radius: 10%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+}
+
+.selector:hover {
+  background-color: rgb(17, 94, 81);
+}
+
+.res-list {
+  background-color: rgba(74, 199, 126, 0.897);
+  border-color: rgb(35, 133, 84);
+  border-style: dashed;
+  position: absolute;
+  overflow: scroll;
+  /* */
+  left: 1%;
+  bottom: 3%;
+  width: 24%;
+  min-width: 200px;
+  height: 80%;
+  min-height: 400px;
+}
+
+.res-list._active {
+  background-color: rgb(154, 212, 178);
+  border-style: groove;
+  border-color: rgb(39, 71, 55);
+}
+
+.render-window {
+  background-color: rgb(88, 88, 88);
+  border-color: rgb(36, 36, 36);
+  border-style: dotted;
+  position: absolute;
+  /* */
+  top: 1%;
+  right: 3%;
+  width: 70%;
+  min-width: 256px;
+  height: 70%;
+  min-height: 144px;
+}
+
+.file-stat {
+  background-color: rgba(74, 199, 126, 0.897);
+  border-color: rgb(35, 133, 84);
+  border-style: dashed;
+  position: absolute;
+  z-index: -1;
+  /* */
+  display: flex;
+  align-items: baseline;
+  justify-content: left;
+  /* */
+  bottom: 3%;
+  right: 3%;
+  width: 70%;
+  min-width: 256px;
+  height: 18%;
+  min-height: 30px;
+}

@@ -97,7 +97,7 @@ config = defaultConfiguration {destinationDirectory = "docs"}
 
 main :: IO ()
 main = hakyllWith config $ do
-  match "static/*" $ route (gsubRoute "static/" (const "")) >> compile copyFileCompiler
+  match "static/**" $ route (gsubRoute "static/" (const "")) >> compile copyFileCompiler
   match "posts/index.md" $ do
     route $ gsubRoute "posts/" (const "") `composeRoutes` setExtension "html"
     compile $ do

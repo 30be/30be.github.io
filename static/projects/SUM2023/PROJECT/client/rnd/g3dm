@@ -1,0 +1,338 @@
+// Read binary data from file
+  async loadFile(fileName) {
+    let response = await fetch(fileName);
+    let data_buffer = await response.arrayBuffer();
+    let buffer = new Uint8Array(data_buffer);
+    let curPos = 0;
+
+    const sign = buffer.slice(curPos, curPos += 4).
+      reduce((res_str, ch) => res_str += String.fromCharCode(ch), "");
+    if (sign != "G3DM")
+      . . .
+    let [numOfPrims, numOfMaterials, numOfTextures] =
+      new Uint32Array(data_buffer.slice(curPos, curPos += 4 * 3));
+    . . .
+      let [numOfVertexes, numOfFacetIndexes, mtlNo] =
+        new Uint32Array(data_buffer.slice(curPos, curPos += 4 * 3));
+      let v = new Float32Array(data_buffer.
+                       slice(curPos, curPos += 4 * 12 * numOfVertexes));
+       let ind = new Uint32Array(data_buffer.
+                       slice(curPos, curPos += 4 * numOfFacetIndexes));
+    . . .
+
+    const mtl_name = buffer.slice(curPos, curPos += 300).
+      reduce((res_str, ch) => res_str += ch == 0 ? "" : String.fromCharCode(ch),
+             "");
+    let s = new Float32Array(data_buffer.slice(curPos, curPos += 4 * 11));
+    let txtarr = new Int32Array(data_buffer.slice(curPos, curPos += 4 * 8));
+    let mtl = {
+      name: mat_name,
+      sh:
+      {
+        ka: vec3(s[0], s[1], s[2]),
+        kd: vec3(s[3], s[4], s[5]),
+        ks: vec3(s[6], s[7], s[8]),
+        ph: s[9],
+        trans: s[10],
+      },
+      txs: txtarr,
+    };
+    // Skip not used shader info
+    curPos += 300 + 4;
+    . . .
+      let
+        [w, h, c] = new Uint32Array(data_buffer.slice(curPos, curPos += 4 * 3));
+      let
+        img = buffer.slice(curPos, curPos + w * h * c);
+      let tx = texture({name: name, w: w, h: h, img_data: img})
+  }
+
+!!!
+gl.texImage2D(this.type, 0, gl.RGBA, img.w, img.h, 0, gl.RGBA, gl.UNSIGNED_BYTE, img.img_data);
+
+    function readString(length) {
+      const str = buffer.slice(curPos, curPos + length).
+        reduce((collect, ch) =>
+          collect += ch == 0 ? "" : String.fromCharCode(ch), "");
+      curPos += length;
+      return str;
+    }
+
+
+
+
+
+
+
+
+
+
+
+    BOOL LS4_RndPrimLoad(LS4PRIM *Pr, CHAR *FileName)
+{
+  INT nv, nf;
+  CHAR Buf[10000];
+  FILE *F;
+
+
+  memset(Pr, 0, sizeof(LS4PRIM));
+  if ((F = fopen(FileName, "r")) == NULL)
+    return FALSE;
+
+  nv = nf = 0;
+  while (fgets(Buf, sizeof(Buf), F) != NULL)
+  {
+    if (Buf[0] == 'v' && Buf[1] == ' ') 
+      nv++;
+    else if (Buf[0] == 'f' && Buf[1] == ' ')
+    {
+      INT n = 0;
+      CHAR *ptr = Buf + 2, old= ' ';
+
+      while (*ptr != 0)
+        n += *ptr != ' ' && old == ' ', old = *ptr++;
+      nf += n - 2;
+    }
+  }
+  if (!LS4_RndPrimCreate(Pr, nv, nf * 3))
+  {
+    fclose(F);
+    return FALSE;
+  }
+
+  rewind(F);
+  nv = nf = 0;
+  while (fgets(Buf, sizeof(Buf), F) != NULL)
+  {
+    if (Buf[0] == 'v' && Buf[1] == ' ')
+    {
+      DBL x, y, z;
+
+      sscanf(Buf + 2, "%lf%lf%lf", &x, &y, &z);
+      Pr->V[nv++].P = VecSet(x, y, z);
+    }
+    else if (Buf[0] =='f' && Buf[1] == ' ')
+    {
+      INT n = 0;
+      CHAR *ptr = Buf + 2, old = ' ';
+      INT c = 0, c1 = 0, c0 = 0;
+
+      while (*ptr != 0)
+      {
+        if (*ptr != ' ' && old == ' ')
+        {
+          sscanf(ptr, "%d", &c);
+          if (c < 0)
+            c = nv + c;
+          else
+            c--;
+        
+          if (n == 0)
+            c0 = c;
+          else if (n == 1)
+            c1 = c;
+          else
+          {
+            /*triangle is completed*/
+            Pr->I[nf++] = c0;
+            Pr->I[nf++] = c1;
+            Pr->I[nf++] = c;
+            c1 = c;
+          }
+          n++;
+        }
+       old = *ptr++;
+      }
+    }
+  }
+  fclose(F);
+  return TRUE;
+}
+
+
+
+static BOOL TTP_GeomAddG3DM( ttpMATERIAL_PATTERN *MtlPat, CHAR *FileName )
+{ 
+  FILE *F;
+  INT flen, p, m, t, i, k = 0;
+  BYTE
+    *mem,     /* Copy of the file */
+    *ptr;     /* Pointer to walk by the file */
+  DWORD Sign; /* == "G3DM" */
+  DWORD NumOfPrims;
+  DWORD NumOfMaterials;
+  DWORD NumOfTextures;
+  ttpG3DM_MATERIAL *FileMtls; /* Load materials */
+  ttpTOPO *FilePrims;         /* Load primitives (topology) */
+  ttpTEXTURE **Texs;          /* Textures pointers array */
+  ttpMATERIAL **Mtls;         /* Material pointers array */
+  INT *FilePrimMtlNos;        /* Materials number for primitives */
+  ttpPRIM *Pr;                /* Primitive pointer */
+  INT check = 0;
+
+  if (TTP_GeomCurrentRoot == NULL)
+    return FALSE;
+
+  /* Open file */
+  if ((F = fopen(FileName, "rb")) == NULL)
+    return FALSE;
+
+  /* Obtain file length */
+  fseek(F, 0, SEEK_END);
+  flen = ftell(F);
+  rewind(F);
+
+  /* Allocate memory and load whole file to memory */
+  if ((mem = malloc(flen)) == NULL)
+  {
+    fclose(F);
+    return FALSE;
+  }
+  fread(mem, 1, flen, F);
+  fclose(F);
+
+  ptr = mem;
+  /* Signature */
+  Sign = *(DWORD *)ptr;
+  ptr += 4;
+  if (Sign != *(DWORD *)"G3DM")
+  {
+    free(mem);
+    return FALSE;
+  }
+  NumOfPrims = *(DWORD *)ptr;
+  ptr += 4;
+  NumOfMaterials = *(DWORD *)ptr;
+  ptr += 4;
+  NumOfTextures = *(DWORD *)ptr;
+  ptr += 4;
+
+  /* Prepare memory for load objects */
+  FilePrims = malloc(sizeof(ttpMATERIAL *) * NumOfMaterials +
+                     (sizeof(ttpTOPO) * sizeof(INT)) * NumOfPrims +
+                     sizeof(ttpTEXTURE *) * NumOfTextures);
+  if (FilePrims == NULL)
+  {
+    free(mem);
+    return FALSE;
+  }
+  /* Pointer placing */
+  Texs = (ttpTEXTURE **)(FilePrims + NumOfPrims);
+  Mtls = (ttpMATERIAL **)(Texs + NumOfTextures);
+  FilePrimMtlNos = (INT *)(Mtls + NumOfMaterials);
+
+  /* Move matptr */
+  for (p = 0; p < NumOfPrims; p++)
+  {
+    DWORD NumOfVertexes;
+    DWORD NumOfFacetIndexes;  /* num of facets * 3 */
+    ttpG3DM_VERTEX *Vbuf;     /* without tan, bitan */
+    INT *Ind;
+
+    NumOfVertexes = *(DWORD *)ptr;
+    ptr += 4;
+    NumOfFacetIndexes = *(DWORD *)ptr;
+    ptr += 4;
+    FilePrimMtlNos[p] = *(DWORD *)ptr;
+    ptr += 4;
+
+    Vbuf = (ttpG3DM_VERTEX *)ptr;
+    ptr += sizeof(ttpG3DM_VERTEX) * NumOfVertexes;
+    Ind = (INT *)ptr;
+    ptr += sizeof(INT) * NumOfFacetIndexes;
+
+    if (Ttp->TopoCreateTrimesh(&FilePrims[p], NumOfVertexes, NumOfFacetIndexes))
+    {
+      for (i = 0; i < NumOfVertexes; i++)
+      {
+        FilePrims[p].V[i].Bitan = Vec3Set(0, 0, 0);
+        FilePrims[p].V[i].Tan = Vec3Set(0, 0, 0);
+        if (i == 24)
+          FilePrims[p].V[i].C = Vec4Set(255, 0, 0, 1);
+        else
+          FilePrims[p].V[i].C = Vbuf[i].C;
+        FilePrims[p].V[i].N = Vbuf[i].N;
+        FilePrims[p].V[i].P = Vbuf[i].P;
+        FilePrims[p].V[i].T = Vbuf[i].T;
+      }
+      memcpy(FilePrims[p].I, Ind, sizeof(INT) * NumOfFacetIndexes);
+      /* Build tangent space */
+      Ttp->TopoEvalBB(&FilePrims[p]);
+      Ttp->TopoEvalTangentSpace(&FilePrims[p]);
+    }
+  }
+
+  /* Load materials */
+  FileMtls = (ttpG3DM_MATERIAL *)ptr;
+  ptr += sizeof(ttpG3DM_MATERIAL) * NumOfMaterials;
+
+  /* Load textures */
+  for (t = 0; t < NumOfTextures; t++)
+  {
+    CHAR *Name;
+    DWORD W, H, C;
+
+    Name = (CHAR *)ptr;
+    ptr += 300;
+    W = *(DWORD *)ptr;
+    ptr += 4;
+    H = *(DWORD *)ptr;
+    ptr += 4;
+    C = *(DWORD *)ptr;
+    ptr += 4;
+    Texs[t] = Ttp->TexAddFmt(Name, W, H, C == 4 ? GL_RGBA8 : C == 3 ? GL_RGB8 : GL_R8, TTP_TEXTURE_2D, ptr);
+    ptr += W * H * C;
+  }
+
+  /* Create materials */
+  for (m = 0; m < NumOfMaterials; m++)
+  {
+    CHAR Coeffs[TTP_MAX_NAME];
+    ttpTEXTURE *MtlTex[8]; /* Texture references */
+
+    sprintf(Coeffs, "Ka(%f, %f, %f);Kd(%f, %f, %f);Ks(%f, %f, %f);Ph(%f);Trans(%f)",
+      FileMtls[m].Ka.X, FileMtls[m].Ka.Y, FileMtls[m].Ka.Z,
+      FileMtls[m].Kd.X, FileMtls[m].Kd.Y, FileMtls[m].Kd.Z,
+      FileMtls[m].Ks.X, FileMtls[m].Ks.Y, FileMtls[m].Ks.Z,
+      FileMtls[m].Ph, FileMtls[m].Trans);
+    for (t = 0; t < 8; t++)
+      MtlTex[t] = FileMtls[m].Tex[t] == -1 ? NULL : Texs[FileMtls[m].Tex[t]];
+    Mtls[m] = Ttp->MtlCreateTex(FileMtls[m].Name, MtlPat, Coeffs, MtlTex, 8, FileMtls[m].Trans != 1);
+  }
+
+  /* Load primitives */
+  for (p = 0; p < NumOfPrims; p++)
+  {
+    Pr = Ttp->TopoToPrim(&FilePrims[p], Mtls[FilePrimMtlNos[p]]);
+    TTP_GeomAddPrim(Pr);
+    /// TTP_GeomCurrentRoot->Root->NumOfPrims++;
+    /// /* TTP_GeomCurrentRoot->Root->Prims[p] = Pr; */
+    /// TTP_GeomCurrentRoot->Root->SubNodes[TTP_GeomCurrentRoot->Root->ActiveNumber]->Prims[p] = Pr;
+    /// TTP_GeomCurrentRoot->Root->LocalTrans = MatrIdentity();
+    /// check++;
+  }
+  /*
+    if (p == 0)
+      Node->MinBB = Node->SubNodes[p]->MinBB, Node->MaxBB = Node->SubNodes[p]->MaxBB;
+    else
+    {
+      if (Node->MinBB.X > Node->SubNodes[p]->MinBB.X)
+        Node->MinBB.X = Node->SubNodes[p]->MinBB.X;
+      if (Node->MaxBB.X < Node->SubNodes[p]->MaxBB.X)
+        Node->MaxBB.X = Node->SubNodes[p]->MaxBB.X;
+
+      if (Node->MinBB.Y > Node->SubNodes[p]->MinBB.Y)
+        Node->MinBB.Y = Node->SubNodes[p]->MinBB.Y;
+      if (Node->MaxBB.Y < Node->SubNodes[p]->MaxBB.Y)
+        Node->MaxBB.Y = Node->SubNodes[p]->MaxBB.Y;
+
+      if (Node->MinBB.Z > Node->SubNodes[p]->MinBB.Z)
+        Node->MinBB.Z = Node->SubNodes[p]->MinBB.Z;
+      if (Node->MaxBB.Z < Node->SubNodes[p]->MaxBB.Z)
+        Node->MaxBB.Z = Node->SubNodes[p]->MaxBB.Z;
+    }
+  */
+  free(FilePrims);
+  free(mem);
+  return TRUE;
+} /* End of 'TTP_GeomG3DMLoad' function */

@@ -36,22 +36,16 @@ In random order:
 
 This site is written in Haskell; [the code is here](https://github.com/30be/shoggothStaring/blob/main/main.hs).
 
-#### [Bike on a map (Online)](https://30be.github.io/SUM2023/PROJECT/dist/)
+#### [Bike on a map (Online)](projects/SUM2023/PROJECT/dist/)
 
 [![bike](bike.png){width=30%}](bike.png)
 It loads slowly and is best viewed on a PC.
 Inside, you'll find a 3D engine where you can ride a bicycle with a waving flag, featuring tens of thousands of cows with wings, a Mandelbrot fractal in the sky, and customizable controls.
 
-#### [Web raymarching system (Online)](https://30be.github.io/SUM2024/WebRaymarching/)
+#### [Web raymarching system (Online)](projects/SUM2024/WebRaymarching/)
 
 [![raymarching](raymarching.png){width=30%}](raymarching.png)
 A system for drawing 3D graphics using the ray marching algorithm on the web with GPU acceleration and dynamic shader creation.
-
-#### [Multieditor (Online)](https://30be.github.io/MultiEditor/output/index.html)
-
-[![multieditor](multieditor.png){width=30%}](multieditor.png)
-An unfinished project for viewing objects, textures, and materials of a user's 3D model.
-Written in collaboration with [tim2303](https://github.com/tim2303/), using React and Three.js.
 
 #### [Haskell neural network](https://github.com/30be/haskell-neural-net)
 
