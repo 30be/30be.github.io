@@ -34,7 +34,7 @@ last-update: 2025-10-10
 
 #### [shoggothstaring.com](about)
 
-Этот сайт написан на Haskell [здесь](https://github.com/30be/shoggothStaring/blob/main/main.hs).
+Этот сайт написан на Haskell [здесь](https://github.com/30be/30be.github.io/blob/main/main.hs).
 
 #### [Bike on a map (Online)](projects/SUM2023/PROJECT/dist/)
 

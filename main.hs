@@ -48,12 +48,12 @@ indexCompiler posts text = fmap . renderText <$> traverse getPostData posts ?? t
       ul $ forM_ postsData $ \(PostData {..}) ->
         li $ a ! href (strip $ toText postRoute) $ toHtml $ postTitle <> " - " <> postDate
 
-telegramComments :: Html
-telegramComments = do
+telegramComments :: String -> Html
+telegramComments id = do
   script
     ! async ""
     ! src "https://telegram.org/js/telegram-widget.js?22"
-    ! dataAttribute "telegram-discussion" "shoggothstaring" -- "ls4wrong"
+    ! dataAttribute "telegram-discussion" (toValue $ "shoggothstaring/" <> id)
     ! dataAttribute "comments-limit" "20"
     ! dataAttribute "color" "EB99A1"
     ! dataAttribute "dark" "1"
@@ -86,7 +86,7 @@ defaultTemplate item = do
         meta ! property "og:site_name" ! content "shoggothStaring"
         meta ! property "og:title" ! content (toValue fullTitle)
         meta ! property "og:url" ! content (toValue url)
-        if not (null desc) then meta ! property "og:description" ! content (toValue desc) else mempty
+        if null desc then mempty else meta ! property "og:description" ! content (toValue desc)
         meta ! property "og:type" ! content "article"
         script ! async "async" ! src "search.js" $ mempty
         googleAnalyticsScript
@@ -101,18 +101,19 @@ defaultTemplate item = do
           hr
           p $ do
             "© 2025 LS4. The page source and code are available on "
-            a ! href "https://github.com/30be/shoggothStaring" $ "GitHub"
+            a ! href "https://github.com/30be/30be.github.io" $ "GitHub"
             "."
 
 postTemplate :: Item String -> Compiler (Item String)
 postTemplate item = do
   [title, date] <- fmap toHtml <$> forM ["title", "date"] (getMetadataField' (itemIdentifier item))
+  telegramId <- getMetadataField (itemIdentifier item) "telegram_id"
 
   let postHTML contents = do
         h1 title
         small date
         void contents
-        telegramComments
+        maybe mempty telegramComments telegramId
   pure $ renderHtml . postHTML . preEscapedToHtml <$> item
 
 config :: Configuration

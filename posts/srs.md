@@ -1,6 +1,7 @@
 ---
 title: Spaced repetition
 date: 2025-10-11
+telegram_id: 101
 ---
 
 <div id="anki-heatmap">Make sure to have JavaScript enabled</div>

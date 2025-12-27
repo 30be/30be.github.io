@@ -34,7 +34,7 @@ In random order:
 
 #### [shoggothstaring.com](about)
 
-This site is written in Haskell; [the code is here](https://github.com/30be/shoggothStaring/blob/main/main.hs).
+This site is written in Haskell; [the code is here](https://github.com/30be/30be.github.io/blob/main/main.hs).
 
 #### [Bike on a map (Online)](projects/SUM2023/PROJECT/dist/)
 
