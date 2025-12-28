@@ -1,7 +1,7 @@
 ---
 title: Spaced repetition
 date: 2025-10-11
-telegram_id: 101
+telegram_id: 102
 ---
 
 <div id="anki-heatmap">Make sure to have JavaScript enabled</div>
@@ -11,9 +11,11 @@ Above is a heatmap of my Anki usage. It is updated in real time. I know, it is v
 
 This way, I publicly commit: I, LS4, will never skip a day of Anki practice from 12th October 2025 until the environment requires me to do so.
 
-By skipping, I mean not completing all the new cards (currently, 100 per day) and the cards for review.
+By skipping, I mean not completing all the new cards (currently, ~100~ 50 per day) and the cards for review.
 
 By environment requirement, I mean a physical inability to practice on the day, or a special permission written [here](#days-when-i-did-not-practice) by my past self, if possible.
+
+2025-12-27 UPD: I did not manage to do that. Most of the time I skipped because I felt asleep.
 
 ## Why did I do that?
 
@@ -105,10 +107,6 @@ But improvement in spaced repetition software itself is also possible. Quoting M
 But it sounds really hard to implement from a programming perspective. If the user is the one adding cards, then who will suggest cards that provide surrounding context? How to implement the newly added cards into the FSRS algorithm?
 
 Luckily, we live in an AI era, so we may hope that someday there will be software that will be able to do that. Actually, it doesn't even sound that hard to write, given the abundance and simplicity of LLM APIs. This is a startup idea, by the way. Go make it. I will be your first user.
-
-## Days when I did not practice
-
-- 2025-10-29: I fell asleep before I could do anything. It was caused by 2 consecutive nights with little sleep on a camping tour.
 
 ## Sources
 

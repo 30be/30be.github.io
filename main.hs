@@ -48,17 +48,6 @@ indexCompiler posts text = fmap . renderText <$> traverse getPostData posts ?? t
       ul $ forM_ postsData $ \(PostData {..}) ->
         li $ a ! href (strip $ toText postRoute) $ toHtml $ postTitle <> " - " <> postDate
 
-telegramComments :: String -> Html
-telegramComments id = do
-  script
-    ! async ""
-    ! src "https://telegram.org/js/telegram-widget.js?22"
-    ! dataAttribute "telegram-discussion" (toValue $ "shoggothstaring/" <> id)
-    ! dataAttribute "comments-limit" "20"
-    ! dataAttribute "color" "EB99A1"
-    ! dataAttribute "dark" "1"
-    $ mempty
-
 defaultTemplate :: Item String -> Compiler (Item String)
 defaultTemplate item = do
   url <- mappend "https://shoggothstaring.com/" . unpack . maybeToMonoid . stripSuffix ".html" . pack . maybeToMonoid <$> getRoute iid
@@ -89,6 +78,7 @@ defaultTemplate item = do
         if null desc then mempty else meta ! property "og:description" ! content (toValue desc)
         meta ! property "og:type" ! content "article"
         script ! async "async" ! src "search.js" $ mempty
+        script ! async "async" ! src "comments.js" $ mempty
         googleAnalyticsScript
       body $ do
         nav $ do
@@ -109,7 +99,8 @@ postTemplate item = do
   [title, date] <- fmap toHtml <$> forM ["title", "date"] (getMetadataField' (itemIdentifier item))
   telegramId <- getMetadataField (itemIdentifier item) "telegram_id"
 
-  let postHTML contents = do
+  let telegramComments tId = H.div ! A.id "telegram-comments" ! dataAttribute "telegram-id" (toValue tId) $ mempty
+      postHTML contents = do
         h1 title
         small date
         void contents
