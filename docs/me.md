@@ -8,7 +8,7 @@ last-update: 2025-10-10
 
 Hi. My name is Luka.
 
-I am passionate about programming, reading [blogs](http://23.94.5.170:8080), meditation, and skiing.
+I am passionate about programming, reading [blogs](http://rss.shoggothstaring.com), meditation, and skiing.
 
 I have programming experience in the following languages:
 

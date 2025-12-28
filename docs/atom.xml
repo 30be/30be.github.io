@@ -107,7 +107,7 @@ Make sure to have JavaScript enabled
     <updated>2025-10-02T00:00:00Z</updated>
     <summary type="html"><![CDATA[<h1>Про меня</h1><small>2025-10-02</small><p><small><a href="me">English version</a></small></p>
 <p>Привет. Меня зовут Лука.</p>
-<p>Я увлекаюсь программированием, чтением <a href="http://23.94.5.170:8080">блогов</a>, медитацией и горными лыжами.</p>
+<p>Я увлекаюсь программированием, чтением <a href="http://rss.shoggothstaring.com">блогов</a>, медитацией и горными лыжами.</p>
 <p>Имею опыт программирования на следующих языках:</p>
 <ul>
 <li>C/C++ (Vulkan, OpenGL, WinAPI, SDL2)</li>
