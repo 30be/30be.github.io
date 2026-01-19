@@ -13,7 +13,7 @@ I am passionate about programming, reading [blogs](http://rss.shoggothstaring.co
 I have programming experience in the following languages:
 
 - C/C++ (Vulkan, OpenGL, WinAPI, SDL2)
-- Haskell (Hakyll, base)
+- Haskell (Hakyll, Servant)
 - Python (pytorch, numpy, pandas, matplotlib, seaborn)
 - Javascript (React, Nodejs, Express.js, three.js, Rollup(Webpack))
 

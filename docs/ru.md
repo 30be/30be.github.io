@@ -13,7 +13,7 @@ last-update: 2025-10-10
 Имею опыт программирования на следующих языках:
 
 - C/C++ (Vulkan, OpenGL, WinAPI, SDL2)
-- Haskell (Hakyll, base)
+- Haskell (Hakyll, Servant)
 - Python (pytorch, numpy, pandas, matplotlib, seaborn)
 - JavaScript (React, Node.js, Express.js, three.js, Rollup(Webpack))
 
@@ -26,7 +26,7 @@ last-update: 2025-10-10
 
 В данный момент я имею уровень B2 по немецкому, C1 по английскому, пара сотен [Anki](srs)-карточек по японскому.
 
-Мое мировоззрение во многом совпадает с [LessWrong](https://lesswrong.com/) и Bay Area в целом. Несмотря на то, что я там никогда не был физически, духовно я там живу.
+Мое мировоззрение во многом совпадает с [LessWrong](https://lesswrong.com/) и Bay Area в целом.
 
 ### Проекты
 
