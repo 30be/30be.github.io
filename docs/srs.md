@@ -11,7 +11,7 @@ Above is a heatmap of my Anki usage. It is updated in real time. I know, it is v
 
 This way, I publicly commit: I, LS4, will never skip a day of Anki practice from 12th October 2025 until the environment requires me to do so.
 
-By skipping, I mean not completing all the new cards (currently, ~~100~~ 50 per day) and the cards for review.
+By skipping, I mean not completing all the new cards (currently, ~~100~~ ~~50~~ 30 per day) and the cards for review.
 
 By environment requirement, I mean a physical inability to practice on the day, or a special permission written [here](#days-when-i-did-not-practice) by my past self, if possible.
 

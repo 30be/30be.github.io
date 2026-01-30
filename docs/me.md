@@ -17,7 +17,7 @@ I have programming experience in the following languages:
 - Python (pytorch, numpy, pandas, matplotlib, seaborn)
 - Javascript (React, Nodejs, Express.js, three.js, Rollup(Webpack))
 
-I use Linux (Arch) and can administer it at a basic level. The general coding style I try to adhere to can be described by [grug](https://grugbrain.dev/).
+I use Linux (Arch) and can administer it at a basic level. The general coding style I try to adhere to can be described by [grug](https://grugbrain.dev/), but often just can't stop golfing the code.
 
 My verifiable achievements include:
 
