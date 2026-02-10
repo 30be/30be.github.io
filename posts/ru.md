@@ -17,7 +17,7 @@ last-update: 2025-10-10
 - Python (pytorch, numpy, pandas, matplotlib, seaborn)
 - JavaScript (React, Node.js, Express.js, three.js, Rollup(Webpack))
 
-Использую Linux(Arch), могу его администрировать на базовом уровне. В коде стараюсь держаться принципов [grug](https://grugbrain.dev/) ~~и   немножко гольфить код~~.
+Использую Linux(Arch), могу его администрировать на базовом уровне. В коде стараюсь держаться принципов [grug](https://grugbrain.dev/) ~~и немножко гольфить код~~.
 
 Среди моих достижений можно отметить:
 
